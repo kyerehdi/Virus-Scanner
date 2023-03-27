@@ -25,6 +25,7 @@ def getFileReport(id, APIKEY):
     response = requests.get(url, headers=headers)
 
     obj = response.json()
+    #print (obj)
     result = obj["data"]["attributes"]["total_votes"]["malicious"]
     if result < 1:
         return "Scanner has not found Malware in this file."
@@ -41,19 +42,20 @@ def uploadFile(filePath, APIKEY):
     response = requests.post(url, files=files, headers=headers)
 
     id = getFileAsBytes(filePath)
-    getFileReport(id, APIKEY)
+    print (getFileReport(id, APIKEY))
 
 
 def main():
-    API_KEY = config("API_KEY")
-    filePath = "C:/Users/Derrick/Documents/mongo.txt"
+    API_KEY = "bbb6e2a3355a7acbfc95768cc641608c535a7f3818776e215a7be7ecbcd15973"
+    filePath = "C:\\Users\\taylo\\Desktop\\test.txt"
     file_stats = os.stat(filePath)
-    print(file_stats)
+    #print(file_stats)
     file_sizeMB = file_stats.st_size / (1024 * 1024)
-    print(file_sizeMB)
+    #print(file_sizeMB)
     if file_sizeMB < 32:
-        uploadFile(filePath, API_KEY)
-    print(getFileAsBytes(filePath))
+        (uploadFile(filePath, API_KEY))
+   # print(getFileAsBytes(filePath))
+   
 
 
 if __name__ == "__main__":
