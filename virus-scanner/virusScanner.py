@@ -24,11 +24,14 @@ def getFileReport(id, APIKEY):
     response = requests.get(url, headers=headers)
 
     obj = response.json()
-    result = obj["data"]["attributes"]["total_votes"]["malicious"]
-    if result < 1:
-        return "Scanner has not found Malware in this file."
+    if obj:
+        result = obj["data"]["attributes"]["total_votes"]["malicious"]
+        if result < 1:
+            return "Scanner has not found Malware in this file."
+        else:
+            return "Scanner has found Malware in this file."
     else:
-        return "Scanner has found Malware in this file."
+        return "Error occured while scanning file try again or try another file."
 
 
 def uploadFile(filePath, APIKEY):
@@ -40,7 +43,10 @@ def uploadFile(filePath, APIKEY):
     response = requests.post(url, files=files, headers=headers)
 
     id = getFileAsBytes(filePath)
-    return getFileReport(id, APIKEY)
+    if id:
+        return getFileReport(id, APIKEY)
+    else:
+        return "Error in uploading the file"
 
 
 def main(filePath):
@@ -49,6 +55,8 @@ def main(filePath):
     file_sizeMB = file_stats.st_size / (1024 * 1024)
     if file_sizeMB < 32:
        return uploadFile(filePath, API_KEY)
+    else:
+        return "File has to be less than 32MB";
 
 
 if __name__ == "__main__":

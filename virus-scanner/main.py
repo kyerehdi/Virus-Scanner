@@ -12,9 +12,16 @@ def on_button_click():
     filename = openFileExpoler()
     print("this is fileName", filename)
     if filename:
-        file_chosen.config(text=filename)
-        filePath = filename
-        hasFileBeenUploaded.config(text="File Uploaded")
+        if len(filename) > 40:
+            text = filename[0:30]
+            text = text + "...";
+            file_chosen.config(text=text)
+            filePath = filename
+            hasFileBeenUploaded.config(text="File Uploaded")
+        else:
+            file_chosen.config(text=filename)
+            filePath = filename
+            hasFileBeenUploaded.config(text="File Uploaded")
 
 
 def on_scan_file(filePath):
